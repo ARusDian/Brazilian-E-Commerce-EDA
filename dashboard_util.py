@@ -150,9 +150,9 @@ class DataPreparator:
         )
 
         avg_sales = (
-            df.groupby("product_photos_qty")["order_item_id"]
-            .count()
-            .reset_index(name="avg_sales")
+            product_wsales.groupby("product_photos_qty")["total_sales"]
+            .mean()
+            .reset_index()
         )
 
         return product_wsales, correlation_photo_qty, avg_sales
