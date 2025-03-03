@@ -20,6 +20,7 @@ datetime = [
     "shipping_limit_date",
 ]
 
+all_df = pd.read_csv("data/olist_all_data.csv")
 for col in datetime:
     all_df[col] = pd.to_datetime(all_df[col])
 
@@ -38,7 +39,6 @@ with st.sidebar:
     )
 
 
-all_df = pd.read_csv("data/olist_all_data.csv")
 
 filtered_date_df = all_df[
     (all_df["order_approved_at"] >= str(start_date))
