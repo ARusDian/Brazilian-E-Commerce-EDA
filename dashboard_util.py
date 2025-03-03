@@ -8,6 +8,12 @@ from colorama import Fore, Style
 import folium
 from folium.plugins import HeatMap, MarkerCluster
 import matplotlib.dates as mdates
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
+import calendar
+import matplotlib.pyplot as plt
+import seaborn as sns
+import matplotlib.dates as mdates
 
 
 class DataPreparator:
@@ -28,3 +34,5 @@ class DataPreparator:
         correlation_delivered = df_delivered["delivery_delay (days)"].corr(
             df_delivered["review_score"]
         )
+        
+        return df_delivered, df_non_delivered, correlation_delivered
