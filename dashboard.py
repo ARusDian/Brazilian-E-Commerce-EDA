@@ -4,9 +4,7 @@ import matplotlib.image as mpimg
 import seaborn as sns
 import streamlit as st
 import urllib
-from babel.numbers import format_currency
 import matplotlib.dates as mdates
-
 from dashboard_util import DataPreparator
 
 sns.set(style="dark")
