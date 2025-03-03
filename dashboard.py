@@ -20,7 +20,7 @@ datetime = [
 ]
 
 # Dataset
-all_df = pd.read_csv("./data/olist_all_data.csv")
+all_df = pd.read_csv("data/olist_all_data.csv")
 
 preparator = DataPreparator(all_df)
 
@@ -83,4 +83,26 @@ sns.boxplot(data=df_non_delivered, x="order_status", y="review_score", ax=ax)
 ax.set_title("Distribusi Review Score untuk Order Non-Delivered")
 ax.set_xlabel("Order Status")
 ax.set_ylabel("Review Score")
+st.pyplot(fig)
+
+agg_payment_trend = preparator.create_payment_method_trend_df()
+
+st.header("Tren Penggunaan Metode Pembayaran (2 Tahun Terakhir Berdasarkan Tanggal Terbaru)")
+fig, ax = plt.subplots(figsize=(12, 6))
+for payment in agg_payment_trend["payment_type"].unique():
+    subset = agg_payment_trend[agg_payment_trend["payment_type"] == payment]
+    ax.plot(
+        subset["month"],
+        subset["transaction_count"],
+        marker="o",
+        label=payment,
+    )
+ax.grid(True)
+ax.xaxis.set_major_locator(mdates.MonthLocator())
+ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m"))
+ax.set_xlabel("Bulan")
+ax.set_ylabel("Jumlah Transaksi")
+ax.set_title("Tren Penggunaan Metode Pembayaran (2 Tahun Terakhir Berdasarkan Tanggal Terbaru)")
+ax.legend()
+fig.autofmt_xdate()
 st.pyplot(fig)
