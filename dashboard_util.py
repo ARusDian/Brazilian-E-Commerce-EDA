@@ -3,9 +3,7 @@ import numpy as np
 import random
 import matplotlib.pyplot as plt
 import seaborn as sns
-from IPython.display import display
 import os
-%matplotlib inline
 from colorama import Fore, Style
 import folium
 from folium.plugins import HeatMap, MarkerCluster
