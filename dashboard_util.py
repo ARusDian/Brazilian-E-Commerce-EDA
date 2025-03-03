@@ -75,8 +75,8 @@ class DataPreparator:
 
         order_product = df[df["order_purchase_timestamp"] >= start_date]
 
-        order_product.loc[:, "order_month"] = (
-            order_product["order_purchase_timestamp"]
+        order_product = order_product.assign(
+            order_month=order_product["order_purchase_timestamp"]
             .dt.to_period("M")
             .dt.to_timestamp()
         )
@@ -145,7 +145,7 @@ class DataPreparator:
             how="inner",
         )
 
-        correlation_photo_qty = df["product_photos_qty"].corr(
+        correlation_photo_qty = product_wsales["product_photos_qty"].corr(
             product_wsales["total_sales"]
         )
 
@@ -156,3 +156,27 @@ class DataPreparator:
         )
 
         return product_wsales, correlation_photo_qty, avg_sales
+
+    def create_product_dimension_correlation_freight_value_delivery_delay_review_score_df(
+        self,
+    ):
+        df = self.df.copy()
+
+        df["shipping_time_days"] = (
+            df["order_delivered_customer_date"] - df["order_purchase_timestamp"]
+        ).dt.days
+
+        corr_matrix = product_dimension_delivery_review_df[
+            [
+                "product_length_cm",
+                "product_width_cm",
+                "product_height_cm",
+                "product_weight_g",
+                "product_volume_cm3",
+                "freight_value",
+                "shipping_time_days",
+                "review_score",
+            ]
+        ].corr()
+
+    return df, corr_matrix

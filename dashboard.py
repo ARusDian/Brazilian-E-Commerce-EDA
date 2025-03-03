@@ -144,8 +144,7 @@ ax.set_title(
 )
 ax.set_xlabel("Kategori Produk")
 ax.set_ylabel("Total Volume Penjualan")
-ax.set_xticks(ax.get_xticks())
-ax.set_xticklabels(ax.get_xticklabels(), rotation=45)
+ax.tick_params(axis='x', rotation=45)
 ax.legend([], [], frameon=False)
 plt.tight_layout()
 st.pyplot(fig)
@@ -278,6 +277,14 @@ sns.regplot(
     color="red",
     ax=ax,
 )
+ax.text(
+    x=df_photo_sales["product_photos_qty"].max() * 0.7,
+    y=df_photo_sales["total_sales"].min() + 0.5,
+    s=f"Korelasi: {correlation_photo_sales:.4f}",
+    fontsize=12,
+    color="red",
+    bbox=dict(facecolor="white", alpha=0.7, edgecolor="red"),
+)
 ax.set_title("Hubungan Jumlah Foto Produk dengan Total Penjualan")
 ax.set_xlabel("Jumlah Foto Produk")
 ax.set_ylabel("Total Penjualan")
@@ -298,4 +305,103 @@ ax.legend_.remove()
 ax.set_title("Rata-rata Penjualan berdasarkan Jumlah Foto Produk")
 ax.set_xlabel("Jumlah Foto Produk")
 ax.set_ylabel("Rata-rata Penjualan")
+st.pyplot(fig)
+
+st.header("Pengaruh Dimensi Produk terhadap Biaya dan waktu pengiriman, serta dampaknya terhadap Review Pelanggan")
+
+product_dimension_delivery_review_df, product_dimension_delivery_review_corr = (
+    preparator.create_product_dimension_correlation_freight_value_delivery_delay_review_score_df()
+)
+
+st.subheader("Product Volume vs Freight Value")
+fig, ax = plt.subplots(figsize=(10, 6))
+sns.regplot(
+    data=product_dimension_delivery_review_df,
+    x="product_volume_cm3",
+    y="freight_value",
+    scatter_kws={"s": 30},
+    line_kws={"color": "red"},
+    ax=ax,
+)
+ax.text(
+    x=product_dimension_delivery_review_df["product_volume_cm3"].max() * 0.7,
+    y=product_dimension_delivery_review_df["freight_value"].min() + 0.5,
+    s=f"Corr: {product_dimension_delivery_review_df['product_volume_cm3'].corr(product_dimension_delivery_review_df['freight_value']):.4f}",
+    fontsize=12,
+    color="red",
+    bbox=dict(facecolor="white", alpha=0.7, edgecolor="red"),
+)
+ax.set_title("Product Volume vs Freight Value")
+ax.set_xlabel("Product Volume (cm³)")
+ax.set_ylabel("Freight Value")
+st.pyplot(fig)
+
+st.subheader("Product Volume vs Shipping Time (Days)")
+fig, ax = plt.subplots(figsize=(10, 6))
+sns.regplot(
+    data=product_dimension_delivery_review_df,
+    x="product_volume_cm3",
+    y="shipping_time_days",
+    scatter_kws={"s": 30},
+    line_kws={"color": "red"},
+    ax=ax,
+)
+ax.text(
+    x=product_dimension_delivery_review_df["product_volume_cm3"].max() * 0.7,
+    y=product_dimension_delivery_review_df["shipping_time_days"].min() + 0.5,
+    s=f"Corr: {product_dimension_delivery_review_df['product_volume_cm3'].corr(product_dimension_delivery_review_df['shipping_time_days']):.4f}",
+    fontsize=12,
+    color="red",
+    bbox=dict(facecolor="white", alpha=0.7, edgecolor="red"),
+)
+ax.set_title("Product Volume vs Shipping Time (Days)")
+ax.set_xlabel("Product Volume (cm³)")
+ax.set_ylabel("Shipping Time (days)")
+st.pyplot(fig)
+
+st.subheader("Product Weight vs Freight Value")
+fig, ax = plt.subplots(figsize=(10, 6))
+sns.regplot(
+    data=product_dimension_delivery_review_df,
+    x="product_weight_g",
+    y="freight_value",
+    scatter_kws={"s": 30},
+    line_kws={"color": "red"},
+    ax=ax,
+)
+ax.text(
+    x=product_dimension_delivery_review_df["product_weight_g"].max() * 0.7,
+    y=product_dimension_delivery_review_df["freight_value"].min() + 0.5,
+    s=f"Corr: {product_dimension_delivery_review_df['product_weight_g'].corr(product_dimension_delivery_review_df['freight_value']):.4f}",
+    fontsize=12,
+    color="red",
+    bbox=dict(facecolor="white", alpha=0.7, edgecolor="red"),
+)
+ax.set_title("Product Weight vs Freight Value")
+ax.set_xlabel("Product Weight (g)")
+ax.set_ylabel("Freight Value")
+st.pyplot(fig)
+
+st.subheader("Product Volume vs Review Score")
+fig, ax = plt.subplots(figsize=(10, 6))
+sns.boxplot(data=product_dimension_delivery_review_df, x="review_score", y="product_volume_cm3", ax=ax)
+ax.set_title("Product Volume vs Review Score")
+ax.set_xlabel("Review Score")
+ax.set_ylabel("Product Volume (cm³)")
+st.pyplot(fig)
+
+st.subheader("Product Weight vs Review Score")
+fig, ax = plt.subplots(figsize=(10, 6))
+sns.boxplot(data=product_dimension_delivery_review_df, x="review_score", y="product_weight_g", ax=ax)
+ax.set_title("Product Weight vs Review Score")
+ax.set_xlabel("Review Score")
+ax.set_ylabel("Product Weight (g)")
+st.pyplot(fig)
+
+st.subheader("Matriks Korelasi antara Dimensi Produk, Pengiriman, dan Review")
+fig, ax = plt.subplots(figsize=(10, 8))
+sns.heatmap(
+    product_dimension_delivery_review_corr, annot=True, cmap="coolwarm", fmt=".2f", ax=ax
+)
+ax.set_title("Matriks Korelasi antara Dimensi Produk, Pengiriman, dan Review")
 st.pyplot(fig)
