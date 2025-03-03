@@ -6,3 +6,4 @@ ipython
 colorama
 folium
 pillow
+babel
