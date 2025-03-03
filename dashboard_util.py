@@ -38,9 +38,9 @@ class DataPreparator:
         return df_delivered, df_non_delivered, correlation_delivered
 
     def create_payment_method_trend_df(self):
-        payment_methods = dfs["order_payments"]["payment_type"].unique()
+        payment_methods = self.df["payment_type"].unique()
 
-        order_wpayments = dfs["orders"].merge(dfs["order_payments"], on="order_id")
+        order_wpayments = self.df.copy()
 
         latest_date = order_wpayments["order_purchase_timestamp"].max()
 
@@ -61,5 +61,5 @@ class DataPreparator:
         )
 
         agg_data = agg_data.sort_values(by="month") 
-        
+
         return agg_data
