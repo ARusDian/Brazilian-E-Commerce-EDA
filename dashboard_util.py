@@ -166,7 +166,7 @@ class DataPreparator:
             df["order_delivered_customer_date"] - df["order_purchase_timestamp"]
         ).dt.days
 
-        corr_matrix = product_dimension_delivery_review_df[
+        corr_matrix = df[
             [
                 "product_length_cm",
                 "product_width_cm",
@@ -194,5 +194,5 @@ class DataPreparator:
         top_categories = category_sales.head(10)
 
         bottom_categories = category_sales.tail(10)
-        
+
         return top_categories, bottom_categories

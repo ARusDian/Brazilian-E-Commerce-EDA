@@ -211,15 +211,6 @@ df_photo_review, correlation_photo_qty, avg_photo_review = (
     preparator.create_product_photo_qty_correlation_review_score_df()
 )
 
-
-st.subheader("Plot antara Jumlah Foto Produk dan Skor Review")
-fig, ax = plt.subplots(figsize=(10, 6))
-sns.scatterplot(x="product_photos_qty", y="review_score", data=df_photo_review, alpha=0.6, ax=ax)
-ax.set_title("Plot antara Jumlah Foto Produk dan Skor Review")
-ax.set_xlabel("Jumlah Foto Produk")
-ax.set_ylabel("Skor Review")
-st.pyplot(fig)
-
 st.subheader("Distribusi Skor Review berdasarkan Jumlah Foto Produk")
 fig, ax = plt.subplots(figsize=(10, 6))
 sns.boxplot(x="product_photos_qty", y="review_score", data=df_photo_review, ax=ax)
