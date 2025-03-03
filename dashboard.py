@@ -20,7 +20,7 @@ datetime = [
 ]
 
 # Dataset
-all_df = pd.read_csv("data/olist_all_data.csv")
+all_df = pd.read_csv(./"data/olist_all_data.csv")
 
 preparator = DataPreparator(all_df)
 
