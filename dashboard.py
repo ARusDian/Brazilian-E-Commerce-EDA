@@ -144,6 +144,7 @@ ax.set_title(
 )
 ax.set_xlabel("Kategori Produk")
 ax.set_ylabel("Total Volume Penjualan")
+ax.set_xticks(ax.get_xticks())
 ax.set_xticklabels(ax.get_xticklabels(), rotation=45)
 ax.legend([], [], frameon=False)
 plt.tight_layout()
@@ -210,40 +211,40 @@ df_photo_review, correlation_photo_qty, avg_photo_review = (
 )
 
 
-st.subheader("Relationship between Product Photos Quantity and Review Score")
+st.subheader("Plot antara Jumlah Foto Produk dan Skor Review")
 fig, ax = plt.subplots(figsize=(10, 6))
 sns.scatterplot(x="product_photos_qty", y="review_score", data=df_photo_review, alpha=0.6, ax=ax)
-ax.set_title("Relationship between Product Photos Quantity and Review Score")
-ax.set_xlabel("Product Photos Quantity")
-ax.set_ylabel("Review Score")
+ax.set_title("Plot antara Jumlah Foto Produk dan Skor Review")
+ax.set_xlabel("Jumlah Foto Produk")
+ax.set_ylabel("Skor Review")
 st.pyplot(fig)
 
-st.subheader("Review Score Distribution by Product Photos Quantity")
+st.subheader("Distribusi Skor Review berdasarkan Jumlah Foto Produk")
 fig, ax = plt.subplots(figsize=(10, 6))
 sns.boxplot(x="product_photos_qty", y="review_score", data=df_photo_review, ax=ax)
-ax.set_title("Review Score Distribution by Product Photos Quantity")
-ax.set_xlabel("Product Photos Quantity")
-ax.set_ylabel("Review Score")
+ax.set_title("Distribusi Skor Review berdasarkan Jumlah Foto Produk")
+ax.set_xlabel("Jumlah Foto Produk")
+ax.set_ylabel("Skor Review")
 st.pyplot(fig)
 
-st.subheader("Relationship between Product Photos Quantity and Review Score with Regression")
+st.subheader("Hubungan antara Jumlah Foto Produk dan Skor Review dengan Regresi")
 fig, ax = plt.subplots(figsize=(10, 6))
 sns.scatterplot(x="product_photos_qty", y="review_score", data=df_photo_review, alpha=0.6, ax=ax)
 sns.regplot(data=df_photo_review, x="product_photos_qty", y="review_score", scatter=False, color="red", ax=ax)
 ax.text(
     x=df_photo_review["product_photos_qty"].max() * 0.7,
     y=df_photo_review["review_score"].min() + 0.5,
-    s=f"Corr: {correlation_photo_qty:.4f}",
+    s=f"Korelasi: {correlation_photo_qty:.4f}",
     fontsize=12,
     color="red",
     bbox=dict(facecolor="white", alpha=0.7, edgecolor="red"),
 )
-ax.set_title("Relationship between Product Photos Quantity and Review Score with Regression")
-ax.set_xlabel("Product Photos Quantity")
-ax.set_ylabel("Review Score")
+ax.set_title("Hubungan antara Jumlah Foto Produk dan Skor Review dengan Regresi")
+ax.set_xlabel("Jumlah Foto Produk")
+ax.set_ylabel("Skor Review")
 st.pyplot(fig)
 
-st.subheader("Average Review Score by Product Photos Quantity")
+st.subheader("Rata-rata Skor Review berdasarkan Jumlah Foto Produk")
 fig, ax = plt.subplots(figsize=(10, 6))
 sns.barplot(
     x="product_photos_qty",
@@ -255,7 +256,7 @@ sns.barplot(
     ax=ax,
 )
 ax.legend_.remove()
-ax.set_title("Average Review Score by Product Photos Quantity")
-ax.set_xlabel("Product Photos Quantity")
-ax.set_ylabel("Average Review Score")
+ax.set_title("Rata-rata Skor Review berdasarkan Jumlah Foto Produk")
+ax.set_xlabel("Jumlah Foto Produk")
+ax.set_ylabel("Rata-rata Skor Review")
 st.pyplot(fig)

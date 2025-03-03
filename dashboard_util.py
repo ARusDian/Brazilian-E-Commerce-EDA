@@ -73,11 +73,9 @@ class DataPreparator:
 
         start_date = latest_date - pd.DateOffset(years=1)
 
-        # Filter data berdasarkan rentang waktu 2 tahun terakhir
         order_product = df[df["order_purchase_timestamp"] >= start_date]
 
-        # Konversi order_purchase_timestamp ke periode bulanan lalu ke datetime untuk plotting
-        order_product["order_month"] = (
+        order_product.loc[:, "order_month"] = (
             order_product["order_purchase_timestamp"]
             .dt.to_period("M")
             .dt.to_timestamp()
@@ -89,7 +87,6 @@ class DataPreparator:
             .reset_index(name="sales_count")
         )
 
-        # Hitung total penjualan per kategori selama 2 tahun terakhir
         total_sales = (
             order_product.groupby("product_category_name_english")
             .size()
