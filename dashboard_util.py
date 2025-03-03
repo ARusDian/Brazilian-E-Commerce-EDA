@@ -135,3 +135,15 @@ class DataPreparator:
         )
 
         return df, correlation_photo_qty, avg_review
+    
+    def create_product_photo_qty_correlation_sales_df(self):
+        df = self.df.copy()
+        
+        product_wsales = df.groupby("product_id")["order_item_id"].count().reset_index(name="sales_count")
+        
+        correlation_photo_qty = df["product_photos_qty"].corr(product_wsales["sales_count"])
+        
+        avg_sales = df.groupby("product_photos_qty")["order_item_id"].count().reset_index(name="avg_sales")
+        
+
+        return df, correlation_photo_qty, avg_sales

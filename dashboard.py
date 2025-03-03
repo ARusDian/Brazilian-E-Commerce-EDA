@@ -206,6 +206,8 @@ fig.autofmt_xdate()
 st.pyplot(fig)
 
 st.header("Analisis Korelasi Jumlah Foto Produk dengan Persepsi Pelanggan")
+
+
 df_photo_review, correlation_photo_qty, avg_photo_review = (
     preparator.create_product_photo_qty_correlation_review_score_df()
 )
@@ -259,4 +261,41 @@ ax.legend_.remove()
 ax.set_title("Rata-rata Skor Review berdasarkan Jumlah Foto Produk")
 ax.set_xlabel("Jumlah Foto Produk")
 ax.set_ylabel("Rata-rata Skor Review")
+st.pyplot(fig)
+
+df_photo_sales, correlation_photo_sales, avg_photo_sales = (
+    preparator.create_product_photo_qty_correlation_sales_df()
+)
+
+st.subheader("Hubungan Jumlah Foto Produk dengan Total Penjualan")
+fig, ax = plt.subplots(figsize=(10, 6))
+sns.scatterplot(x="product_photos_qty", y="total_sales", data=df_photo_sales, ax=ax)
+sns.regplot(
+    x="product_photos_qty",
+    y="total_sales",
+    data=df_photo_sales,
+    scatter=False,
+    color="red",
+    ax=ax,
+)
+ax.set_title("Hubungan Jumlah Foto Produk dengan Total Penjualan")
+ax.set_xlabel("Jumlah Foto Produk")
+ax.set_ylabel("Total Penjualan")
+st.pyplot(fig)
+
+st.subheader("Rata-rata Penjualan berdasarkan Jumlah Foto Produk")
+fig, ax = plt.subplots(figsize=(10, 6))
+sns.barplot(
+    x="product_photos_qty",
+    y="total_sales",
+    hue="product_photos_qty",
+    data=avg_photo_sales,
+    palette="viridis",
+    dodge=False,
+    ax=ax,
+)
+ax.legend_.remove()
+ax.set_title("Rata-rata Penjualan berdasarkan Jumlah Foto Produk")
+ax.set_xlabel("Jumlah Foto Produk")
+ax.set_ylabel("Rata-rata Penjualan")
 st.pyplot(fig)
