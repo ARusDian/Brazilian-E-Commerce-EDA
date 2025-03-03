@@ -50,28 +50,18 @@ df_delivered, df_non_delivered, correlation_delivered = (
     preparator.create_orders_delivery_delays_df()
 )
 
-plt.figure(figsize=(8, 6))
-sns.boxplot(data=df_delivered, y="delivery_delay (days)")
-plt.title("Distribusi Review Score untuk Order Delivered")
-plt.ylabel("Review Score")
-plt.show()
+# Box Plot Distribusi Review Score untuk Order Delivered
+fig, ax = plt.subplots(figsize=(8, 6))
+sns.boxplot(data=df_delivered, y="delivery_delay (days)", ax=ax)
+ax.set_title("Distribusi Review Score untuk Order Delivered")
+ax.set_ylabel("Review Score")
+st.pyplot(fig)
 
 # Scatter Plot dengan Regresi untuk Order Delivered
-plt.figure(figsize=(10, 6))
-sns.scatterplot(
-    data=df_delivered, x="delivery_delay (days)", y="review_score", alpha=0.5
-)
-
-# Plot regresi
-sns.regplot(
-    data=df_delivered,
-    x="delivery_delay (days)",
-    y="review_score",
-    scatter=False,
-    color="red",
-)
-
-plt.text(
+fig, ax = plt.subplots(figsize=(10, 6))
+sns.scatterplot(data=df_delivered, x="delivery_delay (days)", y="review_score", alpha=0.5, ax=ax)
+sns.regplot(data=df_delivered, x="delivery_delay (days)", y="review_score", scatter=False, color="red", ax=ax)
+ax.text(
     x=df_delivered["delivery_delay (days)"].max() * 0.7,
     y=df_delivered["review_score"].min() + 0.5,
     s=f"Corr: {correlation_delivered:.4f}",
@@ -79,17 +69,15 @@ plt.text(
     color="red",
     bbox=dict(facecolor="white", alpha=0.7, edgecolor="red"),
 )
-
-plt.title("Hubungan antara Delivery Delay dan Review Score (Order Delivered)")
-plt.xlabel("Delivery Delay (hari)")
-plt.ylabel("Review Score")
-plt.show()
-
+ax.set_title("Hubungan antara Delivery Delay dan Review Score (Order Delivered)")
+ax.set_xlabel("Delivery Delay (hari)")
+ax.set_ylabel("Review Score")
+st.pyplot(fig)
 
 # Box Plot Distribusi Review Score untuk Order Non-Delivered Berdasarkan Status Order
-plt.figure(figsize=(8, 6))
-sns.boxplot(data=df_non_delivered, x="order_status", y="review_score")
-plt.title("Distribusi Review Score untuk Order Non-Delivered")
-plt.xlabel("Order Status")
-plt.ylabel("Review Score")
-plt.show()
+fig, ax = plt.subplots(figsize=(8, 6))
+sns.boxplot(data=df_non_delivered, x="order_status", y="review_score", ax=ax)
+ax.set_title("Distribusi Review Score untuk Order Non-Delivered")
+ax.set_xlabel("Order Status")
+ax.set_ylabel("Review Score")
+st.pyplot(fig)
