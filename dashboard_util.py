@@ -109,7 +109,7 @@ class DataPreparator:
         sales_trend_top = sales_trend[
             sales_trend["product_category_name_english"].isin(top_categories)
         ]
-        
+
         bottom_categories = (
             total_sales
             .tail(10)["product_category_name_english"]
@@ -125,3 +125,16 @@ class DataPreparator:
         ]
 
         return top_total_sales, sales_trend_top, bottom_total_sales, sales_trend_bottom
+
+    def create_product_photo_qty_correlation_review_score_df(self):
+        df = self.df.copy()
+
+        product_photo_qty = df["product_photos_qty"].unique()
+
+        correlation_photo_qty = df["product_photos_qty"].corr(df["review_score"])
+
+        avg_review = (
+            df.groupby("product_photos_qty")["review_score"].mean().reset_index()
+        )
+
+        return df, correlation_photo_qty, avg_review

@@ -39,7 +39,6 @@ with st.sidebar:
     )
 
 
-
 filtered_date_df = all_df[
     (all_df["order_approved_at"] >= str(start_date))
     & (all_df["order_approved_at"] <= str(end_date))
@@ -203,4 +202,58 @@ ax.set_xlabel("Bulan")
 ax.set_ylabel("Jumlah Penjualan")
 ax.legend(title="Kategori Produk")
 fig.autofmt_xdate()
+st.pyplot(fig)
+
+st.header("Analisis Korelasi Jumlah Foto Produk dengan Persepsi Pelanggan")
+df_photo_review, correlation_photo_qty, avg_photo_review = preparator.create_photo_review_df()
+
+
+st.subheader("Relationship between Product Photos Quantity and Review Score")
+fig, ax = plt.subplots(figsize=(10, 6))
+sns.scatterplot(x="product_photos_qty", y="review_score", data=df_photo_review, alpha=0.6, ax=ax)
+ax.set_title("Relationship between Product Photos Quantity and Review Score")
+ax.set_xlabel("Product Photos Quantity")
+ax.set_ylabel("Review Score")
+st.pyplot(fig)
+
+st.subheader("Review Score Distribution by Product Photos Quantity")
+fig, ax = plt.subplots(figsize=(10, 6))
+sns.boxplot(x="product_photos_qty", y="review_score", data=df_photo_review, ax=ax)
+ax.set_title("Review Score Distribution by Product Photos Quantity")
+ax.set_xlabel("Product Photos Quantity")
+ax.set_ylabel("Review Score")
+st.pyplot(fig)
+
+st.subheader("Relationship between Product Photos Quantity and Review Score with Regression")
+fig, ax = plt.subplots(figsize=(10, 6))
+sns.scatterplot(x="product_photos_qty", y="review_score", data=df_photo_review, alpha=0.6, ax=ax)
+sns.regplot(data=df_photo_review, x="product_photos_qty", y="review_score", scatter=False, color="red", ax=ax)
+ax.text(
+    x=df_photo_review["product_photos_qty"].max() * 0.7,
+    y=df_photo_review["review_score"].min() + 0.5,
+    s=f"Corr: {correlation_photo_qty:.4f}",
+    fontsize=12,
+    color="red",
+    bbox=dict(facecolor="white", alpha=0.7, edgecolor="red"),
+)
+ax.set_title("Relationship between Product Photos Quantity and Review Score with Regression")
+ax.set_xlabel("Product Photos Quantity")
+ax.set_ylabel("Review Score")
+st.pyplot(fig)
+
+st.subheader("Average Review Score by Product Photos Quantity")
+fig, ax = plt.subplots(figsize=(10, 6))
+sns.barplot(
+    x="product_photos_qty",
+    y="review_score",
+    hue="product_photos_qty",
+    data=avg_photo_review,
+    palette="viridis",
+    dodge=False,
+    ax=ax,
+)
+ax.legend_.remove()
+ax.set_title("Average Review Score by Product Photos Quantity")
+ax.set_xlabel("Product Photos Quantity")
+ax.set_ylabel("Average Review Score")
 st.pyplot(fig)
