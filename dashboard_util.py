@@ -151,4 +151,4 @@ class DataPreparator:
 
         avg_sales = df.groupby("product_photos_qty")["order_item_id"].count().reset_index(name="avg_sales")
 
-        return df, correlation_photo_qty, avg_sales
+        return product_wsales, correlation_photo_qty, avg_sales
