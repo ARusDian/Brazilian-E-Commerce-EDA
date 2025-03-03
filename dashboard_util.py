@@ -179,4 +179,20 @@ class DataPreparator:
             ]
         ].corr()
 
-    return df, corr_matrix
+        return df, corr_matrix
+
+    def create_category_sales_df(self):
+        df = self.df.copy()
+
+        category_sales = (
+            df.groupby("product_category_name_english")
+            .size()
+            .reset_index(name="total_sales")
+            .sort_values("total_sales", ascending=False)
+        )
+
+        top_categories = category_sales.head(10)
+
+        bottom_categories = category_sales.tail(10)
+        
+        return top_categories, bottom_categories

@@ -405,3 +405,42 @@ sns.heatmap(
 )
 ax.set_title("Matriks Korelasi antara Dimensi Produk, Pengiriman, dan Review")
 st.pyplot(fig)
+
+top_categories, bottom_categories = preparator.create_category_sales_df()
+
+st.header("Analisis Penjualan Terlaris dan Terendah Berdasarkan Kategori Produk")
+plt.figure(figsize=(16, 6))
+st.subheader("Top 10 Kategori Produk Berdasarkan Penjualan")
+fig, ax = plt.subplots(figsize=(10, 6))
+sns.barplot(
+    data=top_categories,
+    x="total_sales",
+    y="product_category_name_english",
+    hue="product_category_name_english",
+    dodge=False,
+    palette="viridis",
+    ax=ax,
+)
+ax.set_title("Top 10 Kategori Produk Berdasarkan Penjualan")
+ax.set_xlabel("Total Penjualan")
+ax.set_ylabel("Kategori Produk")
+ax.legend([], [], frameon=False)
+st.pyplot(fig)
+
+# Chart untuk Bottom 10 Kategori Produk
+st.subheader("Bottom 10 Kategori Produk Berdasarkan Penjualan")
+fig, ax = plt.subplots(figsize=(10, 6))
+sns.barplot(
+    data=bottom_categories.sort_values("total_sales", ascending=True),
+    x="total_sales",
+    y="product_category_name_english",
+    hue="product_category_name_english",
+    dodge=False,
+    palette="viridis",
+    ax=ax,
+)
+ax.set_title("Bottom 10 Kategori Produk Berdasarkan Penjualan")
+ax.set_xlabel("Total Penjualan")
+ax.set_ylabel("Kategori Produk")
+ax.legend([], [], frameon=False)
+st.pyplot(fig)
