@@ -107,11 +107,9 @@ class DataPreparator:
             sales_trend["product_category_name_english"].isin(top_categories)
         ]
 
-        bottom_categories = (
-            total_sales
-            .tail(10)["product_category_name_english"]
-            .tolist()
-        )
+        bottom_categories = total_sales.tail(10)[
+            "product_category_name_english"
+        ].tolist()
 
         bottom_total_sales = total_sales[
             total_sales["product_category_name_english"].isin(bottom_categories)
@@ -139,9 +137,8 @@ class DataPreparator:
     def create_product_photo_qty_correlation_sales_df(self):
         df = self.df.copy()
 
-        product_wsales = (
-           df.merge(
-                df.groupby("product_id")["order_item_id"]
+        product_wsales = df.merge(
+            df.groupby("product_id")["order_item_id"]
             .count()
             .reset_index(name="total_sales"),
             on="product_id",
@@ -152,6 +149,10 @@ class DataPreparator:
             product_wsales["total_sales"]
         )
 
-        avg_sales = df.groupby("product_photos_qty")["order_item_id"].count().reset_index(name="avg_sales")
+        avg_sales = (
+            df.groupby("product_photos_qty")["order_item_id"]
+            .count()
+            .reset_index(name="avg_sales")
+        )
 
         return product_wsales, correlation_photo_qty, avg_sales
