@@ -205,7 +205,9 @@ fig.autofmt_xdate()
 st.pyplot(fig)
 
 st.header("Analisis Korelasi Jumlah Foto Produk dengan Persepsi Pelanggan")
-df_photo_review, correlation_photo_qty, avg_photo_review = preparator.create_photo_review_df()
+df_photo_review, correlation_photo_qty, avg_photo_review = (
+    preparator.create_product_photo_qty_correlation_review_score_df()
+)
 
 
 st.subheader("Relationship between Product Photos Quantity and Review Score")
