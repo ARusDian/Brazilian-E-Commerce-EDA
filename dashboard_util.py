@@ -140,9 +140,12 @@ class DataPreparator:
         df = self.df.copy()
 
         product_wsales = (
-            df.groupby("product_id")["order_item_id"]
+           df.merge(
+                df.groupby("product_id")["order_item_id"]
             .count()
-            .reset_index(name="total_sales")
+            .reset_index(name="total_sales"),
+            on="product_id",
+            how="inner",
         )
 
         correlation_photo_qty = df["product_photos_qty"].corr(
