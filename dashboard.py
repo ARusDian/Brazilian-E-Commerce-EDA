@@ -1,16 +1,45 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
+import seaborn as sns
 import streamlit as st
+import urllib
+from babel.numbers import format_currency
 
-def main():
-    st.title("Chatbot Streamlit App")
+from dashboard_util import DataPreparator
 
-    user_input = st.text_input("Enter your message:")
+sns.set(style="dark")
 
-    if st.button("Send"):
-        chatbot_response = get_chatbot_response(user_input)
-        st.text_area("Chatbot Response:", chatbot_response, height=100)
+datetime = [
+    "order_approved_at",
+    "order_delivered_carrier_date",
+    "order_delivered_customer_date",
+    "order_estimated_delivery_date",
+    "order_purchase_timestamp",
+    "shipping_limit_date",
+]
 
-def get_chatbot_response(user_input):
-    return "Chatbot: Hello! I’m a simple chatbot. You said: " + user_input
+# Dataset
+all_df = pd.read_csv("data/olist_all_data.csv")
 
-if __name__ == "__main__":
-    main()
+for col in datetime:
+    all_df[col] = pd.to_datetime(all_df[col])
+
+min_date = all_df["order_approved_at"].min()
+max_date = all_df["order_approved_at"].max()
+
+# Sidebar
+with st.sidebar:
+    # Title
+    st.title("M. Nandaarjuna F.")
+
+    # Logo Image
+    # st.image("./date_img.jpg")
+
+    # Date Range
+    start_date, end_date = st.date_input(
+        label="Rentang Waktu",
+        value=[min_date, max_date],
+        min_value=min_date,
+        max_value=max_date,
+    )
