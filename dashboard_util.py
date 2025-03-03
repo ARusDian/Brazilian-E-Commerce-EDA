@@ -4,9 +4,6 @@ import random
 import matplotlib.pyplot as plt
 import seaborn as sns
 import os
-from colorama import Fore, Style
-import folium
-from folium.plugins import HeatMap, MarkerCluster
 import matplotlib.dates as mdates
 from datetime import datetime
 from dateutil.relativedelta import relativedelta

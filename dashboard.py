@@ -1,9 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-import matplotlib.image as mpimg
 import seaborn as sns
 import streamlit as st
-import urllib
 import matplotlib.dates as mdates
 from dashboard_util import DataPreparator
 
@@ -36,11 +34,14 @@ with st.sidebar:
         max_value=max_date,
     )
 
-
-filtered_date_df = all_df[
-    (all_df["order_approved_at"] >= str(start_date))
-    & (all_df["order_approved_at"] <= str(end_date))
-]
+try:
+    filtered_date_df = all_df[
+        (all_df["order_approved_at"] >= str(start_date))
+        & (all_df["order_approved_at"] <= str(end_date))
+    ]
+except Exception as e:
+    st.error(f"Error filtering data by date: {e}")
+    filtered_date_df = all_df
 
 preparator = DataPreparator(filtered_date_df)
 
@@ -203,7 +204,6 @@ fig.autofmt_xdate()
 st.pyplot(fig)
 
 st.header("Analisis Korelasi Jumlah Foto Produk dengan Persepsi Pelanggan")
-
 
 df_photo_review, correlation_photo_qty, avg_photo_review = (
     preparator.create_product_photo_qty_correlation_review_score_df()
