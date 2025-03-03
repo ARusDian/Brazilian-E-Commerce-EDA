@@ -49,8 +49,9 @@ with st.sidebar:
 df_delivered, df_non_delivered, correlation_delivered = (
     preparator.create_orders_delivery_delays_df()
 )
-
+st.header("Analisis Delivery Delay dan Review Score pada Order Delivered dan Non-Delivered")
 # Box Plot Distribusi Review Score untuk Order Delivered
+st.subheader("Distribusi Review Score untuk Order Delivered")
 fig, ax = plt.subplots(figsize=(8, 6))
 sns.boxplot(data=df_delivered, y="delivery_delay (days)", ax=ax)
 ax.set_title("Distribusi Review Score untuk Order Delivered")
@@ -58,6 +59,7 @@ ax.set_ylabel("Review Score")
 st.pyplot(fig)
 
 # Scatter Plot dengan Regresi untuk Order Delivered
+st.subheader("Hubungan antara Delivery Delay dan Review Score (Order Delivered)")
 fig, ax = plt.subplots(figsize=(10, 6))
 sns.scatterplot(data=df_delivered, x="delivery_delay (days)", y="review_score", alpha=0.5, ax=ax)
 sns.regplot(data=df_delivered, x="delivery_delay (days)", y="review_score", scatter=False, color="red", ax=ax)
@@ -75,6 +77,7 @@ ax.set_ylabel("Review Score")
 st.pyplot(fig)
 
 # Box Plot Distribusi Review Score untuk Order Non-Delivered Berdasarkan Status Order
+st.subheader("Distribusi Review Score untuk Order Non-Delivered Berdasarkan Status Order")
 fig, ax = plt.subplots(figsize=(8, 6))
 sns.boxplot(data=df_non_delivered, x="order_status", y="review_score", ax=ax)
 ax.set_title("Distribusi Review Score untuk Order Non-Delivered")
