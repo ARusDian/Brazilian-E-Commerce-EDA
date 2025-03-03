@@ -51,7 +51,9 @@ class DataPreparator:
         ].copy()
 
         filtered_data["month"] = (
-            filtered_data["order_purchase_timestamp"].dt.to_period("M").dt.to_timestamp()
+            filtered_data["order_purchase_timestamp"]
+            .dt.to_period("M")
+            .dt.to_timestamp()
         )
 
         agg_data = (
@@ -60,6 +62,66 @@ class DataPreparator:
             .reset_index(name="transaction_count")
         )
 
-        agg_data = agg_data.sort_values(by="month") 
+        agg_data = agg_data.sort_values(by="month")
 
         return agg_data
+
+    def create_volume_sales_category_df(self):
+        df = self.df.copy()
+
+        latest_date = df["order_purchase_timestamp"].max()
+
+        start_date = latest_date - pd.DateOffset(years=1)
+
+        # Filter data berdasarkan rentang waktu 2 tahun terakhir
+        order_product = df[df["order_purchase_timestamp"] >= start_date]
+
+        # Konversi order_purchase_timestamp ke periode bulanan lalu ke datetime untuk plotting
+        order_product["order_month"] = (
+            order_product["order_purchase_timestamp"]
+            .dt.to_period("M")
+            .dt.to_timestamp()
+        )
+
+        sales_trend = (
+            order_product.groupby(["order_month", "product_category_name_english"])
+            .size()
+            .reset_index(name="sales_count")
+        )
+
+        # Hitung total penjualan per kategori selama 2 tahun terakhir
+        total_sales = (
+            order_product.groupby("product_category_name_english")
+            .size()
+            .reset_index(name="total_sales")
+        ).sort_values("total_sales", ascending=False)
+
+        top_categories = (
+            total_sales.sort_values("total_sales", ascending=False)
+            .head(10)["product_category_name_english"]
+            .tolist()
+        )
+
+        top_total_sales = total_sales[
+            total_sales["product_category_name_english"].isin(top_categories)
+        ]
+
+        sales_trend_top = sales_trend[
+            sales_trend["product_category_name_english"].isin(top_categories)
+        ]
+        
+        bottom_categories = (
+            total_sales
+            .tail(10)["product_category_name_english"]
+            .tolist()
+        )
+
+        bottom_total_sales = total_sales[
+            total_sales["product_category_name_english"].isin(bottom_categories)
+        ].sort_values("total_sales", ascending=True)
+
+        sales_trend_bottom = sales_trend[
+            sales_trend["product_category_name_english"].isin(bottom_categories)
+        ]
+
+        return top_total_sales, sales_trend_top, bottom_total_sales, sales_trend_bottom
