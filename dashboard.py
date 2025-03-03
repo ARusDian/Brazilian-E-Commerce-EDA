@@ -130,9 +130,6 @@ st.pyplot(fig)
 
 st.header("Analisis Volume Penjualan Berdasarkan Kategori Produk")
 st.subheader("Top 5 Kategori Produk dengan Total Penjualan Tertinggi")
-st.write(top_category_total_sales)
-
-st.subheader("Tren Penjualan Top 5 Kategori Produk")
 fig, ax = plt.subplots(figsize=(12, 6))
 sns.barplot(
     data=top_category_total_sales,
@@ -154,7 +151,6 @@ plt.tight_layout()
 st.pyplot(fig)
 
 st.subheader("Bottom 5 Kategori Produk dengan Total Penjualan Terendah")
-st.write(bottom_category_total_sales)
 fig, ax = plt.subplots(figsize=(12, 6))
 sns.barplot(
     data=bottom_category_total_sales,
